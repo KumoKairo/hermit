@@ -27,7 +27,6 @@ static func list_frames(dir: String) -> PackedStringArray:
 		paths.append(abs_dir.path_join(n))
 	return paths
 
-		
 func build_flipbook(fps: float, loop: bool) -> HermitFlipbook:
 	var fb := HermitFlipbook.new()
 	fb.fps = fps
@@ -43,7 +42,7 @@ func build_flipbook(fps: float, loop: bool) -> HermitFlipbook:
 	fb.index_raw_size = all.size()
 	fb.index_data = all.compress(FileAccess.COMPRESSION_ZSTD)
 	return fb
-	
+
 func load_frame(path: String) -> Image:
 	var img := Image.load_from_file(path)
 	img.convert(Image.FORMAT_RGBA8)
@@ -54,7 +53,7 @@ func load_frame(path: String) -> Image:
 	# the transparent pixel color values depend on the CC app, but again, it's too easy to just normalize it here
 	clean.blit_rect_mask(img, img, Rect2i(Vector2i.ZERO, img.get_size()), Vector2i.ZERO)
 	return clean
-	
+
 func add_frame(img: Image) -> void:
 	if frame_size == Vector2i.ZERO:
 		frame_size = img.get_size()
@@ -100,7 +99,7 @@ func add_frame(img: Image) -> void:
 	frame_digests[digest] = unique_frames_size
 	frame_map.append(unique_frames_size)
 	unique_frames.append(ids)
-			
+
 func build_palette() -> Image:
 	var keys := block_ids.keys()
 	var rows := ceili(float(keys.size()) / PER_ROW)
@@ -109,7 +108,7 @@ func build_palette() -> Image:
 		var tile := Image.create_from_data(4, 4, false, Image.FORMAT_RGBA8, keys[id])
 		palette.blit_rect(tile, Rect2i(0, 0, 4, 4), Vector2i(id % PER_ROW, id / PER_ROW) * 4)
 	return palette
-	
+
 func build_index_frames() -> void:
 	var wide := block_ids.size() > BITS_IN_TWO_BYTES
 	# ask me about why we don't care about FORMAT_RGB8 here for a bedtime story

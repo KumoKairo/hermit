@@ -38,7 +38,7 @@ func _can_import_threaded() -> bool:
 	
 func _get_import_options(path: String, preset_index: int) -> Array[Dictionary]:
 	return [
-		{"name": "fps", "default_value": 12.0, "property_hint": PROPERTY_HINT_RANGE, "hint_string": "1120, 0.001"},
+		{"name": "fps", "default_value": 12.0, "property_hint": PROPERTY_HINT_RANGE, "hint_string": "1, 120, 0.001"},
 		{"name": "loop", "default_value": true}
 	]
 
