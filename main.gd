@@ -17,7 +17,10 @@ var index_tex : ImageTexture
 var current_frame := 0
 var elapsed := 0.0
 
-var reference: TextureRect
+@onready var decoder: SubViewport = $Decoder
+@onready var display: ColorRect = $Decoder/Display
+@onready var sprite: Sprite2D = $Sprite
+var playing := true
 
 func _ready():
 	var start := Time.get_ticks_msec()
@@ -37,10 +40,17 @@ func _ready():
 	mat.set_shader_parameter("palette", ImageTexture.create_from_image(palette))
 	mat.set_shader_parameter("indices", index_tex)
 	mat.set_shader_parameter("frame_size", frame_size)
-	$Display.material = mat
-	$Display.size = Vector2(frame_size)
+	display.material = mat
+	display.size = Vector2(frame_size)
 	
-	show_frame(5)
+	decoder.size = frame_size
+	decoder.transparent_bg = true
+	decoder.disable_3d = true
+	decoder.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	
+	sprite.texture = decoder.get_texture()
+	sprite.position = get_viewport_rect().size / 2.0
+	show_frame(0)
 	
 func _process(delta: float) -> void:
 	elapsed += delta
@@ -53,6 +63,7 @@ func show_frame(f: int) -> void:
 	current_frame = f
 	index_img.set_data(grid.x, grid.y, false, index_format, index_frames[f])
 	index_tex.update(index_img)
+	decoder.render_target_update_mode = SubViewport.UPDATE_ONCE
 
 func list_frames(dir: String) -> PackedStringArray:
 	var abs_dir := ProjectSettings.globalize_path(dir)

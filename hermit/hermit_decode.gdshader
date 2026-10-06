@@ -1,4 +1,5 @@
 shader_type canvas_item;
+render_mode unshaded, blend_disabled;
 
 uniform sampler2D palette : filter_nearest, repeat_disable;
 uniform sampler2D indices : filter_nearest, repeat_disable;
