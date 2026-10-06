@@ -13,6 +13,8 @@ extends Resource
 @export_storage var index_raw_size := 0
 @export_storage var index_data := PackedByteArray()
 
+# TODO consider splitting the frame data into arrays ahead of time to avoid copying
+# var _frames: Array[PackedByteArray] = []
 var _palette_texture: Texture2D
 var _indices := PackedByteArray()
 
@@ -39,3 +41,12 @@ func get_index_bytes(unique_frame: int) -> PackedByteArray:
 		_indices = index_data.decompress(index_raw_size, FileAccess.COMPRESSION_ZSTD)
 	var size := grid_size.x * grid_size.y * index_bytes
 	return _indices.slice(unique_frame * size, (unique_frame + 1) * size)
+	
+func prepare() -> void:
+	get_palette_texture()
+	if _indices.is_empty():
+		_indices = index_data.decompress(index_raw_size, FileAccess.COMPRESSION_ZSTD)
+		
+func release() -> void:
+	_palette_texture = null
+	_indices = PackedByteArray()

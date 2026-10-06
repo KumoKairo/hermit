@@ -1,0 +1,17 @@
+[remap]
+
+importer="hermit.flipbook"
+importer_version=1
+type="Resource"
+uid="uid://0tmskhmhx0du"
+path="res://.godot/imported/char-loop.hermit-2b026382fa52521b595d32b6dbd515b5.res"
+
+[deps]
+
+source_file="res://char-loop.hermit"
+dest_files=["res://.godot/imported/char-loop.hermit-2b026382fa52521b595d32b6dbd515b5.res"]
+
+[params]
+
+fps=12.0
+loop=true
