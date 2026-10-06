@@ -1,8 +1,13 @@
 extends Node2D
 
+const FLIPBOOK_PATH := "res://char-loop.res"
+var flipbook: HermitFlipbook
+
 const PER_ROW := 256
 const FRAMES_DIR := "res://frames/char-loop"
 const FPS := 12.0
+
+const BITS_IN_TWO_BYTES = 65536
 
 var files := PackedStringArray()
 var frame_size := Vector2i.ZERO
@@ -23,21 +28,16 @@ var elapsed := 0.0
 var playing := true
 
 func _ready():
-	var start := Time.get_ticks_msec()
-	files = list_frames(FRAMES_DIR)
-	for path in files:
-		var before := block_ids.size()
-		add_frame(load_frame_global(path))
-	build_index_frames()
-	var palette := build_palette()
-	palette.save_png("user://frames_palette.png")
-	print("%d frames, %d unique blocks, %d ms" % [index_frames.size(), block_ids.size(), Time.get_ticks_msec() - start])
+	if not ResourceLoader.exists(FLIPBOOK_PATH):
+		encode_and_save()
+	flipbook = load(FLIPBOOK_PATH)
 	
-	index_img = Image.create_from_data(grid.x, grid.y, false, index_format, index_frames[0])
+	var g := flipbook.grid_size
+	index_img = Image.create_from_data(g.x, g.y, false, flipbook.get_index_format(), flipbook.get_index_bytes(0))
 	index_tex = ImageTexture.create_from_image(index_img)
 	var mat := ShaderMaterial.new()
-	mat.shader = preload("res://hermit/hermit_decode.gdshader")
-	mat.set_shader_parameter("palette", ImageTexture.create_from_image(palette))
+	mat.shader = preload("res://addons/hermit/hermit_decode.gdshader")
+	mat.set_shader_parameter("palette", flipbook.get_palette_texture())
 	mat.set_shader_parameter("indices", index_tex)
 	mat.set_shader_parameter("frame_size", frame_size)
 	display.material = mat
@@ -54,14 +54,16 @@ func _ready():
 	
 func _process(delta: float) -> void:
 	elapsed += delta
-	var one_over_fps = 1.0 / FPS
+	var one_over_fps = 1.0 / flipbook.fps
 	if elapsed >= one_over_fps:
 		elapsed -= one_over_fps
-		show_frame((current_frame + 1) % frames.size())
+		show_frame((current_frame + 1) % flipbook.get_frame_count())
 
 func show_frame(f: int) -> void:
 	current_frame = f
-	index_img.set_data(grid.x, grid.y, false, index_format, index_frames[f])
+	
+	var g := flipbook.grid_size
+	index_img.set_data(g.x, g.y, false, flipbook.get_index_format(), flipbook.get_index_bytes(f))
 	index_tex.update(index_img)
 	decoder.render_target_update_mode = SubViewport.UPDATE_ONCE
 
@@ -138,10 +140,38 @@ func build_palette() -> Image:
 	return palette
 	
 func build_index_frames() -> void:
-	var wide := block_ids.size() > 65536
+	var wide := block_ids.size() > BITS_IN_TWO_BYTES
 	# ask me about why we don't care about FORMAT_RGB8 here for a bedtime story
 	index_format = Image.FORMAT_RGBA8 if wide else Image.FORMAT_RG8
 	for ids in frames:
 		var img := Image.create_from_data(grid.x, grid.y, false, Image.FORMAT_RGBA8, ids.to_byte_array())
 		img.convert(index_format)
 		index_frames.append(img.get_data())
+		
+func build_flipbook() -> HermitFlipbook:
+	var fb := HermitFlipbook.new()
+	fb.fps = FPS
+	fb.frame_size = frame_size
+	fb.grid_size = grid
+	fb.frame_map = frames
+	fb.palette_data = build_palette().save_webp_to_buffer(false)
+	fb.index_bytes = 4 if block_ids.size() > BITS_IN_TWO_BYTES else 2
+	var all := PackedByteArray()
+	for bytes in index_frames:
+		all.append_array(bytes)
+	fb.index_raw_size = all.size()
+	fb.index_data = all.compress(FileAccess.COMPRESSION_ZSTD)
+	return fb
+	
+func encode_and_save() -> void:
+	files = list_frames(FRAMES_DIR)
+	for path in files:
+		add_frame(load_frame_global(path))
+	build_index_frames()
+	var fb := build_flipbook()
+	print("palette %d B, indices %d B (raw %d B)" % [
+		fb.palette_data.size(), fb.index_data.size(), fb.index_raw_size
+	])
+	var err := ResourceSaver.save(fb, FLIPBOOK_PATH)
+	if err != OK:
+		push_error("failed saving: %s" % error_string(err))
