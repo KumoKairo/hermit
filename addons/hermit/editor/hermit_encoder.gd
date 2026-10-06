@@ -28,10 +28,7 @@ static func list_frames(dir: String) -> PackedStringArray:
 	return paths
 
 		
-func build_flipbook(fps: float, loop: bool) -> HermitFlipbook:
-	var fb := HermitFlipbook.new()
-	fb.fps = fps
-	fb.loop = loop
+func fill(fb: HermitFlipbook) -> void:
 	fb.frame_size = frame_size
 	fb.grid_size = grid
 	fb.frame_map = frame_map
@@ -42,7 +39,6 @@ func build_flipbook(fps: float, loop: bool) -> HermitFlipbook:
 		all.append_array(bytes)
 	fb.index_raw_size = all.size()
 	fb.index_data = all.compress(FileAccess.COMPRESSION_ZSTD)
-	return fb
 	
 func load_frame(path: String) -> Image:
 	var img := Image.load_from_file(path)

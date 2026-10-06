@@ -2,8 +2,10 @@
 class_name HermitFlipbook
 extends Resource
 
+@export_dir var source_dir := ""
 @export var fps := 12.0
 @export var loop := true
+@export_tool_button("Bake") var bake_action = bake
 
 @export_storage var frame_size := Vector2i.ZERO
 @export_storage var grid_size := Vector2i.ZERO
@@ -50,3 +52,30 @@ func prepare() -> void:
 func release() -> void:
 	_palette_texture = null
 	_indices = PackedByteArray()
+	
+# TODO this is a convenience Bake button and Fully in-Godot UX
+# that trade usability for storing baked data in source control
+# also no scripting hints
+# and calling editor code from gameplay code which kinda smells to me
+# if you have better ideas - please help yourself
+# ---
+# check commit history for the original way to handle custom format import
+# it's a bit less usable in terms of UX, but cleaner code and less smell imo
+func bake() -> void:
+	var encoder_script = load("res://addons/hermit/editor/hermit_encoder.gd")
+	var files: PackedStringArray = encoder_script.list_frames(source_dir)
+	if files.is_empty():
+		push_error("Hermit: no PNG frames found in %s. If using other formats, either convert to PNG or edit plugin's source code." % source_dir)
+		return
+	var encoder = encoder_script.new()
+	for path in files:
+		encoder.add_frame(encoder.load_frame(path))
+	encoder.build_index_frames()
+	encoder.fill(self)
+	release() # clearning possible previous bake, marking dirty
+	emit_changed()
+	if not resource_path.is_empty():
+		ResourceSaver.save(self, resource_path)
+	print("Hermit: baked %s %d frames (%d unique), %d blocks" % [
+		resource_path.get_file(), frame_map.size(), encoder.unique_frames.size(), encoder.block_ids.size()
+	])
