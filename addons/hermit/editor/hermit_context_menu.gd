@@ -23,8 +23,10 @@ func _create(paths: Array) -> void:
 	# TODO optional ignoring the "hermified" folder
 	# frames themselves are not needed after baking
 	# and should not be shipped or edited in the engine
-	FileAccess.open(dir.path_join(".gdignore"), FileAccess.WRITE).close()
-	for file_name in DirAccess.get_files_at(dir):
-		if file_name.ends_with(".import"):
-			DirAccess.remove_absolute(dir.path_join(file_name))
+	# commented out here to reduce confusion
+	
+	# FileAccess.open(dir.path_join(".gdignore"), FileAccess.WRITE).close()
+	# for file_name in DirAccess.get_files_at(dir):
+	# 	if file_name.ends_with(".import"):
+	#		DirAccess.remove_absolute(dir.path_join(file_name))
 	EditorInterface.get_resource_filesystem().scan()
