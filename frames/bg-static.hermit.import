@@ -1,0 +1,17 @@
+[remap]
+
+importer="hermit.flipbook"
+importer_version=1
+type="Resource"
+uid="uid://b8d0yffiibylm"
+path="res://.godot/imported/bg-static.hermit-e67598f0cd02424d87d19274deb4fd9a.res"
+
+[deps]
+
+source_file="res://frames/bg-static.hermit"
+dest_files=["res://.godot/imported/bg-static.hermit-e67598f0cd02424d87d19274deb4fd9a.res"]
+
+[params]
+
+fps=12.0
+loop=true
