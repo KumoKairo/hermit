@@ -13,10 +13,9 @@ flipbook_frame = 6
 metadata/_custom_type_script = "uid://dian1v0sqx3l1"
 
 [node name="HermitSprite2D2" type="Sprite2D" parent="."]
-position = Vector2(605, 726)
+position = Vector2(1332, 749)
+scale = Vector2(-1, 1)
 script = ExtResource("1_0xm2m")
 flipbook = ExtResource("2_0xm2m")
-flipbook_frame = 7
-playing = false
-speed_scale = 0.8
+flipbook_frame = 1
 metadata/_custom_type_script = "uid://dian1v0sqx3l1"
