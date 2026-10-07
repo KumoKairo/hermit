@@ -2,10 +2,13 @@
 class_name HermitSprite2D
 extends Sprite2D
 
-signal finished
+signal animation_finished
+signal animation_looped
+signal flipbook_frame_changed
 
 const DECODE_SHADER := preload("res://addons/hermit/hermit_decode.gdshader")
 const HIDDEN_PROPERTIES := ["texture", "hframes", "vframes", "frame", "frame_coords"]
+const DECODER_TAG := &"hermit_decoder"
 
 @export var flipbook: HermitFlipbook:
 	set(value):
@@ -14,8 +17,11 @@ const HIDDEN_PROPERTIES := ["texture", "hframes", "vframes", "frame", "frame_coo
 
 @export var flipbook_frame := 0:
 	set(value):
+		if value == flipbook_frame:
+			return
 		flipbook_frame = value
 		_show_frame()
+		flipbook_frame_changed.emit()
 
 @export var playing := true
 @export var speed_scale := 1.0
@@ -28,6 +34,10 @@ var _shown_unique := -1
 var _elapsed := 0.0
 
 func _init() -> void:
+	for child in get_children(true):
+		if child.has_meta(DECODER_TAG):
+			child.queue_free()
+			
 	_material = ShaderMaterial.new()
 	_material.shader = DECODE_SHADER
 	var display := ColorRect.new()
@@ -40,6 +50,7 @@ func _init() -> void:
 	_decoder.add_child(display)
 	add_child(_decoder, false, INTERNAL_MODE_FRONT)
 	texture = _decoder.get_texture()
+	_setup()
 
 func _ready() -> void:
 	texture = _decoder.get_texture()
@@ -48,34 +59,58 @@ func _validate_property(property: Dictionary) -> void:
 	if property.name in HIDDEN_PROPERTIES:
 		property.usage = PROPERTY_USAGE_NONE
 		
+func play() -> void:
+	if flipbook != null and not flipbook.loop and flipbook_frame >= flipbook.get_frame_count() - 1:
+		flipbook_frame = 0
+	_elapsed = 0.0
+	playing = true
+	
+func pause() -> void:
+	playing = false
+
+func stop() -> void:
+	playing = false
+	_elapsed = 0.0
+	flipbook_frame = 0
+	
+func is_playing() -> bool:
+	return playing
+		
 func _process(delta: float) -> void:
-	# TODO check speed_scale here too maybe
-	if flipbook == null or not playing or Engine.is_editor_hint() or flipbook.fps <= 0.0:
+	if flipbook == null or not playing or Engine.is_editor_hint():
 		return
+		
+	var count := flipbook.get_frame_count()
+	if count == 0 or flipbook.fps <= 0.0:
+		return
+		
 	_elapsed += delta * speed_scale
 	var step := 1.0 / flipbook.fps
 	if _elapsed < step:
 		return
+		
 	# frame catch-up if the game froze and we have to skip more than one frame of the animation
 	var advance := int(_elapsed / step)
 	_elapsed -= advance * step
-	var count := flipbook.get_frame_count()
 	var next := flipbook_frame + advance
-	if flipbook.loop:
-		flipbook_frame = posmod(next, count)
-	elif next >= count - 1:
-		flipbook_frame = count -1
-		playing = false
-		finished.emit()
-	else:
+	if next < count:
 		flipbook_frame = next
+	elif flipbook.loop:
+		 # next can be negative if speed scale is < 0
+		flipbook_frame = posmod(next, count)
+		animation_looped.emit()
+	else:
+		flipbook_frame = count - 1
+		playing = false
+		animation_finished.emit()
 		
 func _setup() -> void:
 	_shown_unique = -1
 	_index_img = null
 	_index_tex = null
-	if flipbook == null:
+	if _decoder == null or flipbook == null:
 		return
+		
 	flipbook.prepare()
 	_decoder.size = flipbook.frame_size
 	_material.set_shader_parameter("palette", flipbook.get_palette_texture())
@@ -83,12 +118,14 @@ func _setup() -> void:
 	_show_frame()
 	
 func _show_frame() -> void:
-	if flipbook == null or flipbook.get_frame_count() == 0:
+	if _decoder == null or flipbook == null or flipbook.get_frame_count() == 0:
 		return
+		
 	var f := clampi(flipbook_frame, 0, flipbook.get_frame_count() - 1)
 	var unique := flipbook.get_unique_frame(f)
 	if unique == _shown_unique:
 		return
+		
 	_shown_unique = unique
 	var g := flipbook.grid_size
 	var bytes := flipbook.get_index_bytes(unique)
