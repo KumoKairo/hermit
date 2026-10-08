@@ -7,7 +7,7 @@ signal animation_looped
 signal flipbook_frame_changed
 
 const DECODE_SHADER := preload("res://addons/hermit/hermit_decode.gdshader")
-const HIDDEN_PROPERTIES := ["texture", "hframes", "vframes", "frame", "frame_coords"]
+const HIDDEN_PROPERTIES := ["texture", "hframes", "vframes", "frame", "frame_coords", "material"]
 
 @export var flipbook: HermitFlipbook:
 	set(value):
@@ -25,7 +25,6 @@ const HIDDEN_PROPERTIES := ["texture", "hframes", "vframes", "frame", "frame_coo
 @export var playing := true
 @export var speed_scale := 1.0
 
-var _decoder: SubViewport
 var _material: ShaderMaterial
 var _index_img: Image
 var _index_tex: ImageTexture
@@ -36,16 +35,7 @@ var _direction := 1
 func _init() -> void:
 	_material = ShaderMaterial.new()
 	_material.shader = DECODE_SHADER
-	var display := ColorRect.new()
-	display.material = _material
-	display.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_decoder = SubViewport.new()
-	_decoder.disable_3d = true
-	_decoder.transparent_bg = true
-	_decoder.render_target_update_mode = SubViewport.UPDATE_DISABLED
-	_decoder.add_child(display)
-	add_child(_decoder, false, INTERNAL_MODE_FRONT)
-	texture = _decoder.get_texture()
+	material = _material
 	
 func _validate_property(property: Dictionary) -> void:
 	if property.name in HIDDEN_PROPERTIES:
@@ -109,10 +99,13 @@ func _setup() -> void:
 	_index_img = null
 	_index_tex = null
 	if flipbook == null:
+		texture = null
 		return
 		
 	flipbook.prepare()
-	_decoder.size = flipbook.frame_size
+	var size_texture = PlaceholderTexture2D.new()
+	size_texture.size = Vector2(flipbook.frame_size)
+	texture = size_texture
 	_material.set_shader_parameter("palette", flipbook.get_palette_texture())
 	_material.set_shader_parameter("frame_size", flipbook.frame_size)
 	_show_frame()
@@ -136,5 +129,4 @@ func _show_frame() -> void:
 	else:
 		_index_img.set_data(g.x, g.y, false, flipbook.get_index_format(), bytes)
 		_index_tex.update(_index_img)
-	_decoder.render_target_update_mode = SubViewport.UPDATE_ONCE
 	

@@ -1,12 +1,12 @@
 shader_type canvas_item;
-render_mode unshaded, blend_disabled;
+// render_mode unshaded, blend_disabled;
 
 uniform sampler2D palette : filter_nearest, repeat_disable;
 uniform sampler2D indices : filter_nearest, repeat_disable;
 uniform ivec2 frame_size = ivec2(1, 1);
 
 void fragment() {
-	ivec2 px = min(ivec2(UV * vec2(frame_size)), frame_size - ivec2(1));
+	ivec2 px = clamp(ivec2(UV / TEXTURE_PIXEL_SIZE), ivec2(0), frame_size - ivec2(1));
 	ivec2 cell = px / 4;
 	// belt and suspenders here - texelFetch ignores filtering and wrapping anyway
 	vec4 e = round(texelFetch(indices, cell, 0) * 255.0);
