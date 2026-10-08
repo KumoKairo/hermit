@@ -4,7 +4,8 @@ const VARIANTS: Dictionary[String, String] = {
 	"empty": "res://harness/empty.tscn",
 	"baseline_lossless": "res://harness/baseline_lossless.tscn",
 	"baseline_compressed": "res://harness/baseline_compressed.tscn",
-	"hermit": "res://harness/hermit.tscn"
+	"hermit": "res://harness/hermit.tscn",
+	"hermit-compressed": "res://harness/hermit-compressed.tscn"
 }
 const RESULTS_PATH := "user://hermit_harness.jsonl"
 
