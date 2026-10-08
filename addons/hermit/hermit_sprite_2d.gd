@@ -32,6 +32,7 @@ var _index_img: Image
 var _index_tex: ImageTexture
 var _shown_unique := -1
 var _elapsed := 0.0
+var _direction := 1
 
 func _init() -> void:
 	for child in get_children(true):
@@ -60,8 +61,16 @@ func _validate_property(property: Dictionary) -> void:
 		property.usage = PROPERTY_USAGE_NONE
 		
 func play() -> void:
+	_direction = 1
 	if flipbook != null and not flipbook.loop and flipbook_frame >= flipbook.get_frame_count() - 1:
 		flipbook_frame = 0
+	_elapsed = 0.0
+	playing = true
+	
+func play_backwards() -> void:
+	_direction = -1
+	if flipbook != null and not flipbook.loop and flipbook_frame <= 0:
+		flipbook_frame = flipbook.get_frame_count() - 1
 	_elapsed = 0.0
 	playing = true
 	
@@ -70,6 +79,7 @@ func pause() -> void:
 
 func stop() -> void:
 	playing = false
+	_direction = 1
 	_elapsed = 0.0
 	flipbook_frame = 0
 	
@@ -92,15 +102,14 @@ func _process(delta: float) -> void:
 	# frame catch-up if the game froze and we have to skip more than one frame of the animation
 	var advance := int(_elapsed / step)
 	_elapsed -= advance * step
-	var next := flipbook_frame + advance
+	var next := flipbook_frame + advance * _direction
 	if next < count:
 		flipbook_frame = next
 	elif flipbook.loop:
-		 # next can be negative if speed scale is < 0
 		flipbook_frame = posmod(next, count)
 		animation_looped.emit()
 	else:
-		flipbook_frame = count - 1
+		flipbook_frame = count - 1 if _direction > 0 else 0
 		playing = false
 		animation_finished.emit()
 		
