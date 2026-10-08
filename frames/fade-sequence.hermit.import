@@ -14,4 +14,4 @@ dest_files=["res://.godot/imported/fade-sequence.hermit-e39c060b654b4dddc4dbb465
 [params]
 
 fps=12.0
-loop=true
+loop=false

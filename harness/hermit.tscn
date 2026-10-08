@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://dl5ot0jlkitck"]
+
+[ext_resource type="Script" uid="uid://dian1v0sqx3l1" path="res://addons/hermit/hermit_sprite_2d.gd" id="1_7wbvl"]
+[ext_resource type="Resource" uid="uid://b8d0yffiibylm" path="res://frames/bg-static.hermit" id="2_k2db1"]
+[ext_resource type="Resource" uid="uid://cr1w42828maha" path="res://frames/char-loop.hermit" id="3_guohr"]
+[ext_resource type="Resource" uid="uid://dv4tbfnd4n0q3" path="res://frames/fire-loop.hermit" id="4_2jhr1"]
+[ext_resource type="Resource" uid="uid://bd854lvxtyuw3" path="res://frames/fire-overlay.hermit" id="5_c07gy"]
+[ext_resource type="Resource" uid="uid://bqabegc7ai6gx" path="res://frames/fade-sequence.hermit" id="6_d3f2y"]
+[ext_resource type="Script" uid="uid://dfiq1ramuty7b" path="res://harness/fade_sequencer.gd" id="7_x3p7u"]
+
+[node name="Root" type="Node2D"]
+
+[node name="Bg" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+script = ExtResource("1_7wbvl")
+flipbook = ExtResource("2_k2db1")
+metadata/_custom_type_script = "uid://dian1v0sqx3l1"
+
+[node name="Char" type="Sprite2D" parent="."]
+position = Vector2(499, 747)
+script = ExtResource("1_7wbvl")
+flipbook = ExtResource("3_guohr")
+metadata/_custom_type_script = "uid://dian1v0sqx3l1"
+
+[node name="Fire" type="Sprite2D" parent="."]
+position = Vector2(1202, 416)
+script = ExtResource("1_7wbvl")
+flipbook = ExtResource("4_2jhr1")
+metadata/_custom_type_script = "uid://dian1v0sqx3l1"
+
+[node name="FireOverlay" type="Sprite2D" parent="."]
+position = Vector2(1198, 496)
+script = ExtResource("1_7wbvl")
+flipbook = ExtResource("5_c07gy")
+metadata/_custom_type_script = "uid://dian1v0sqx3l1"
+
+[node name="Fade" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+script = ExtResource("1_7wbvl")
+flipbook = ExtResource("6_d3f2y")
+flipbook_frame = 15
+metadata/_custom_type_script = "uid://dian1v0sqx3l1"
+
+[node name="FadeSequencer" type="Node" parent="Fade"]
+script = ExtResource("7_x3p7u")

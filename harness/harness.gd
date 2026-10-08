@@ -8,7 +8,7 @@ const VARIANTS: Dictionary[String, String] = {
 }
 const RESULTS_PATH := "user://hermit_harness.jsonl"
 
-@export var default_variant := "baseline_lossless"
+@export var default_variant := "hermit"
 @export var settle_seconds := 3.0
 @export var sample_seconds := 5.0
 @export var quit_when_done := false

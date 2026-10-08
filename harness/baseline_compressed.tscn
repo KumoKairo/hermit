@@ -34,4 +34,5 @@ autoplay = "default"
 position = Vector2(960, 540)
 sprite_frames = ExtResource("5_6itsb")
 animation = &"fade"
+frame = 15
 script = ExtResource("6_kxvmp")
