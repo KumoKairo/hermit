@@ -8,7 +8,6 @@ signal flipbook_frame_changed
 
 const DECODE_SHADER := preload("res://addons/hermit/hermit_decode.gdshader")
 const HIDDEN_PROPERTIES := ["texture", "hframes", "vframes", "frame", "frame_coords"]
-const DECODER_TAG := &"hermit_decoder"
 
 @export var flipbook: HermitFlipbook:
 	set(value):
@@ -35,10 +34,6 @@ var _elapsed := 0.0
 var _direction := 1
 
 func _init() -> void:
-	for child in get_children(true):
-		if child.has_meta(DECODER_TAG):
-			child.queue_free()
-			
 	_material = ShaderMaterial.new()
 	_material.shader = DECODE_SHADER
 	var display := ColorRect.new()
@@ -50,10 +45,6 @@ func _init() -> void:
 	_decoder.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	_decoder.add_child(display)
 	add_child(_decoder, false, INTERNAL_MODE_FRONT)
-	texture = _decoder.get_texture()
-	_setup()
-
-func _ready() -> void:
 	texture = _decoder.get_texture()
 	
 func _validate_property(property: Dictionary) -> void:
@@ -117,7 +108,7 @@ func _setup() -> void:
 	_shown_unique = -1
 	_index_img = null
 	_index_tex = null
-	if _decoder == null or flipbook == null:
+	if flipbook == null:
 		return
 		
 	flipbook.prepare()
@@ -127,7 +118,7 @@ func _setup() -> void:
 	_show_frame()
 	
 func _show_frame() -> void:
-	if _decoder == null or flipbook == null or flipbook.get_frame_count() == 0:
+	if flipbook == null or flipbook.get_frame_count() == 0:
 		return
 		
 	var f := clampi(flipbook_frame, 0, flipbook.get_frame_count() - 1)
