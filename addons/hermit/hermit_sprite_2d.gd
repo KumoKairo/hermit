@@ -103,7 +103,7 @@ func _process(delta: float) -> void:
 	var advance := int(_elapsed / step)
 	_elapsed -= advance * step
 	var next := flipbook_frame + advance * _direction
-	if next < count:
+	if next >= 0 and next < count:
 		flipbook_frame = next
 	elif flipbook.loop:
 		flipbook_frame = posmod(next, count)
