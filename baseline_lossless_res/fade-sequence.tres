@@ -1,0 +1,74 @@
+[gd_resource type="SpriteFrames" load_steps=17 format=3 uid="uid://krwybgmdo3l1"]
+
+[ext_resource type="Texture2D" uid="uid://bb8c6qhog6e4n" path="res://frames/fade-sequence/fade-sequence_001.png" id="1_pfo0y"]
+[ext_resource type="Texture2D" uid="uid://mmr4hb0svel8" path="res://frames/fade-sequence/fade-sequence_002.png" id="2_hhgrq"]
+[ext_resource type="Texture2D" uid="uid://c04coqscfj688" path="res://frames/fade-sequence/fade-sequence_003.png" id="3_ohk50"]
+[ext_resource type="Texture2D" uid="uid://cxagnvrsuy3pb" path="res://frames/fade-sequence/fade-sequence_004.png" id="4_3q8vk"]
+[ext_resource type="Texture2D" uid="uid://bxdmu4i8ny6r4" path="res://frames/fade-sequence/fade-sequence_005.png" id="5_hhpx2"]
+[ext_resource type="Texture2D" uid="uid://dfreck2br6q2g" path="res://frames/fade-sequence/fade-sequence_006.png" id="6_o4rfv"]
+[ext_resource type="Texture2D" uid="uid://ciyh3pmjor4ju" path="res://frames/fade-sequence/fade-sequence_007.png" id="7_e6gs0"]
+[ext_resource type="Texture2D" uid="uid://bllpedlx282m3" path="res://frames/fade-sequence/fade-sequence_008.png" id="8_yhdio"]
+[ext_resource type="Texture2D" uid="uid://df1khxfrjuhol" path="res://frames/fade-sequence/fade-sequence_009.png" id="9_0grh1"]
+[ext_resource type="Texture2D" uid="uid://bucc3t6i6ppsk" path="res://frames/fade-sequence/fade-sequence_010.png" id="10_o5yra"]
+[ext_resource type="Texture2D" uid="uid://c8gj80poq3i5t" path="res://frames/fade-sequence/fade-sequence_011.png" id="11_pb5ic"]
+[ext_resource type="Texture2D" uid="uid://cd5d56uxdwkkv" path="res://frames/fade-sequence/fade-sequence_012.png" id="12_cwbv8"]
+[ext_resource type="Texture2D" uid="uid://brkcpv4tfr4y4" path="res://frames/fade-sequence/fade-sequence_013.png" id="13_g8dmr"]
+[ext_resource type="Texture2D" uid="uid://y1rucftnweh0" path="res://frames/fade-sequence/fade-sequence_014.png" id="14_r50gn"]
+[ext_resource type="Texture2D" uid="uid://vqju4b3q1tbk" path="res://frames/fade-sequence/fade-sequence_015.png" id="15_u71u5"]
+[ext_resource type="Texture2D" uid="uid://b5fe2wamo8kvk" path="res://frames/fade-sequence/fade-sequence_016.png" id="16_2h2wg"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_pfo0y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_hhgrq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ohk50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_3q8vk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_hhpx2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_o4rfv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_e6gs0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_yhdio")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_0grh1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_o5yra")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_pb5ic")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_cwbv8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_g8dmr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_r50gn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_u71u5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_2h2wg")
+}],
+"loop": false,
+"name": &"fade",
+"speed": 12.0
+}]

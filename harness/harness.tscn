@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7gtqeyt1rsgj"]
+
+[ext_resource type="Script" uid="uid://bbtekj5668apf" path="res://harness/harness.gd" id="1_8vcrc"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_8vcrc")
