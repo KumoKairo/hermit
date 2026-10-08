@@ -25,7 +25,7 @@ func _get_import_order() -> int:
 	return 0
 	
 func _get_format_version() -> int:
-	return 1
+	return 2
 	
 func _get_preset_count() -> int:
 	return 1
@@ -39,7 +39,8 @@ func _can_import_threaded() -> bool:
 func _get_import_options(path: String, preset_index: int) -> Array[Dictionary]:
 	return [
 		{"name": "fps", "default_value": 12.0, "property_hint": PROPERTY_HINT_RANGE, "hint_string": "1, 120, 0.001"},
-		{"name": "loop", "default_value": true}
+		{"name": "loop", "default_value": true},
+		{"name": "palette_format", "default_value": 0, "property_hint": PROPERTY_HINT_ENUM, "hint_string": "Lossless, DXT, BC7"},
 	]
 
 func _get_option_visibility(path: String, option_name: StringName, options: Dictionary) -> bool:
@@ -62,7 +63,7 @@ func _import(source_file: String, save_path: String, options: Dictionary, platfo
 	for path in files:
 		encoder.add_frame(encoder.load_frame(path))
 	encoder.build_index_frames()
-	var flipbook := encoder.build_flipbook(options["fps"], options["loop"])
+	var flipbook := encoder.build_flipbook(options["fps"], options["loop"], options["palette_format"])
 	print("Hermit: %s %d frames (%d unique), %d blocks" % [
 		source_file.get_file(), encoder.frame_map.size(), encoder.unique_frames.size(), encoder.block_ids.size()
 	])

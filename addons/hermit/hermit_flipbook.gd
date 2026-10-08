@@ -2,8 +2,15 @@
 class_name HermitFlipbook
 extends Resource
 
+enum PaletteFormat { LOSSLESS, DXT, BC7 }
+
 @export var fps := 12.0
 @export var loop := true
+
+@export_storage var palette_format := PaletteFormat.LOSSLESS
+@export_storage var palette_size := Vector2i.ZERO
+@export_storage var palette_image_format = Image.FORMAT_RGBA8
+@export_storage var palette_raw_size := 0
 
 @export_storage var frame_size := Vector2i.ZERO
 @export_storage var grid_size := Vector2i.ZERO
@@ -26,10 +33,15 @@ func get_unique_frame(frame: int) -> int:
 	
 func get_palette_texture() -> Texture2D:
 	if _palette_texture == null:
-		var img := Image.new()
-		# can switch to png if needed
-		# shouldn't be any problem with WebP here
-		img.load_webp_from_buffer(palette_data)
+		var img: Image
+		if palette_format == PaletteFormat.LOSSLESS:
+			img = Image.new()
+			# can switch to png if needed
+			# shouldn't be any problem with WebP here
+			img.load_webp_from_buffer(palette_data)
+		else:
+			var raw := palette_data.decompress(palette_raw_size, FileAccess.COMPRESSION_ZSTD)
+			img = Image.create_from_data(palette_size.x, palette_size.y, false, palette_image_format, raw)
 		_palette_texture = ImageTexture.create_from_image(img)
 	return _palette_texture
 	

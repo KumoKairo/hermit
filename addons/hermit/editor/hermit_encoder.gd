@@ -12,6 +12,7 @@ var unique_frames: Array[PackedInt32Array] = []
 var frame_map := PackedInt32Array()
 var index_frames: Array[PackedByteArray] = []
 var index_format := Image.FORMAT_RG8
+var has_alpha := false
 
 static func list_frames(dir: String) -> PackedStringArray:
 	var abs_dir := ProjectSettings.globalize_path(dir)
@@ -27,14 +28,28 @@ static func list_frames(dir: String) -> PackedStringArray:
 		paths.append(abs_dir.path_join(n))
 	return paths
 
-func build_flipbook(fps: float, loop: bool) -> HermitFlipbook:
+func build_flipbook(fps: float, loop: bool, palette_format: int) -> HermitFlipbook:
 	var fb := HermitFlipbook.new()
 	fb.fps = fps
 	fb.loop = loop
 	fb.frame_size = frame_size
 	fb.grid_size = grid
 	fb.frame_map = frame_map
-	fb.palette_data = build_palette().save_webp_to_buffer(false)
+	
+	var palette := build_palette()
+	fb.palette_format = palette_format as HermitFlipbook.PaletteFormat
+	fb.palette_size = palette.get_size()
+	if palette_format == HermitFlipbook.PaletteFormat.LOSSLESS:
+		fb.palette_data = palette.save_webp_to_buffer(false)
+	else:
+		var mode := Image.COMPRESS_BPTC if palette_format == HermitFlipbook.PaletteFormat.BC7 else Image.COMPRESS_S3TC
+		var channels := Image.USED_CHANNELS_RGBA if has_alpha else Image.USED_CHANNELS_RGB
+		palette.compress_from_channels(mode, channels)
+		var raw := palette.get_data()
+		fb.palette_image_format = palette.get_format()
+		fb.palette_raw_size = raw.size()
+		fb.palette_data = raw.compress(FileAccess.COMPRESSION_ZSTD)
+	
 	fb.index_bytes = 4 if block_ids.size() > BITS_IN_TWO_BYTES else 2
 	var all := PackedByteArray()
 	for bytes in index_frames:
@@ -61,6 +76,10 @@ func add_frame(img: Image) -> void:
 	elif img.get_size() != frame_size:
 		push_error("frame sizes are not consistent")
 		return
+		
+	if img.detect_alpha() != Image.ALPHA_NONE:
+		has_alpha = true
+	
 	var src := img.duplicate() as Image
 	src.crop(grid.x * 4, grid.y * 4)
 	var data := src.get_data()

@@ -1,7 +1,7 @@
 [remap]
 
 importer="hermit.flipbook"
-importer_version=1
+importer_version=2
 type="Resource"
 uid="uid://dv4tbfnd4n0q3"
 path="res://.godot/imported/fire-loop.hermit-2ddf909bbf8c57b3443a0f5389eed220.res"
@@ -15,3 +15,4 @@ dest_files=["res://.godot/imported/fire-loop.hermit-2ddf909bbf8c57b3443a0f5389ee
 
 fps=12.0
 loop=true
+palette_format=0
