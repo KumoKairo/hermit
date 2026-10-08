@@ -3,3 +3,5 @@
 /android/
 *.tmp
 builds/
+*.exe
+*.pck
