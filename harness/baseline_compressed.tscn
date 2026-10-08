@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://bjgmwelj21rrm"]
+
+[ext_resource type="Texture2D" uid="uid://qu5cihk6sfd" path="res://frames_vram_compressed/bg-static/bg.png" id="1_0mx65"]
+[ext_resource type="SpriteFrames" uid="uid://dnru752mmk0xq" path="res://baseline_compressed_res/char-loop-idle_compressed.tres" id="2_es7aq"]
+[ext_resource type="SpriteFrames" uid="uid://d3e2gimpclmep" path="res://baseline_compressed_res/flame-loop_compressed.tres" id="3_dt5th"]
+[ext_resource type="SpriteFrames" uid="uid://bsfvgup68far2" path="res://baseline_compressed_res/fire-overlay_compressed.tres" id="4_a61pk"]
+[ext_resource type="SpriteFrames" uid="uid://cgt765yp67v52" path="res://baseline_compressed_res/fade-sequence_compressed.tres" id="5_6itsb"]
+[ext_resource type="Script" uid="uid://bo6r74cga3m37" path="res://harness/delay_start_fade.gd" id="6_kxvmp"]
+
+[node name="Root" type="Node2D"]
+
+[node name="Bg" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = ExtResource("1_0mx65")
+
+[node name="Char" type="AnimatedSprite2D" parent="."]
+position = Vector2(499, 747)
+sprite_frames = ExtResource("2_es7aq")
+animation = &"idle-loop"
+autoplay = "idle-loop"
+
+[node name="Fire" type="AnimatedSprite2D" parent="."]
+position = Vector2(1202, 416)
+sprite_frames = ExtResource("3_dt5th")
+animation = &"flame-loop"
+autoplay = "flame-loop"
+
+[node name="FireOverlay" type="AnimatedSprite2D" parent="."]
+position = Vector2(1198, 496)
+sprite_frames = ExtResource("4_a61pk")
+autoplay = "default"
+
+[node name="Fade" type="AnimatedSprite2D" parent="."]
+position = Vector2(960, 540)
+sprite_frames = ExtResource("5_6itsb")
+animation = &"fade"
+script = ExtResource("6_kxvmp")

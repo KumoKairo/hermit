@@ -1,0 +1,38 @@
+[gd_resource type="SpriteFrames" load_steps=8 format=3 uid="uid://bsfvgup68far2"]
+
+[ext_resource type="Texture2D" uid="uid://dvuw2eysqt2y8" path="res://frames_vram_compressed/fire-overlay/fire-overlay_01.png" id="1_6swdc"]
+[ext_resource type="Texture2D" uid="uid://346au6e6qlh7" path="res://frames_vram_compressed/fire-overlay/fire-overlay_02.png" id="2_7q87a"]
+[ext_resource type="Texture2D" uid="uid://jwlp7a7hhsou" path="res://frames_vram_compressed/fire-overlay/fire-overlay_03.png" id="3_ky543"]
+[ext_resource type="Texture2D" uid="uid://dpjx52nxu6vpt" path="res://frames_vram_compressed/fire-overlay/fire-overlay_04.png" id="4_juoiv"]
+[ext_resource type="Texture2D" uid="uid://qbb0omjpra78" path="res://frames_vram_compressed/fire-overlay/fire-overlay_05.png" id="5_hv5kd"]
+[ext_resource type="Texture2D" uid="uid://d314whj5fuurx" path="res://frames_vram_compressed/fire-overlay/fire-overlay_06.png" id="6_6474t"]
+[ext_resource type="Texture2D" uid="uid://5vl56cqnhwkq" path="res://frames_vram_compressed/fire-overlay/fire-overlay_07.png" id="7_11mau"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_6swdc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_7q87a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ky543")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_juoiv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_hv5kd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_6474t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_11mau")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]

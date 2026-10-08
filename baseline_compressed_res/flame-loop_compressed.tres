@@ -1,0 +1,50 @@
+[gd_resource type="SpriteFrames" load_steps=11 format=3 uid="uid://d3e2gimpclmep"]
+
+[ext_resource type="Texture2D" uid="uid://6me3ga6mb86o" path="res://frames_vram_compressed/fire-loop/FireLoop0000.png" id="1_q8c0l"]
+[ext_resource type="Texture2D" uid="uid://ce3fuqws83oqc" path="res://frames_vram_compressed/fire-loop/FireLoop0001.png" id="2_rakpg"]
+[ext_resource type="Texture2D" uid="uid://bb17yc846bu4m" path="res://frames_vram_compressed/fire-loop/FireLoop0002.png" id="3_82kaf"]
+[ext_resource type="Texture2D" uid="uid://b53ypbjv3momt" path="res://frames_vram_compressed/fire-loop/FireLoop0003.png" id="4_flgnr"]
+[ext_resource type="Texture2D" uid="uid://dpropfs0qauqb" path="res://frames_vram_compressed/fire-loop/FireLoop0004.png" id="5_c1ylq"]
+[ext_resource type="Texture2D" uid="uid://c7f3vd8wvwxq6" path="res://frames_vram_compressed/fire-loop/FireLoop0005.png" id="6_k4w54"]
+[ext_resource type="Texture2D" uid="uid://bm04ebkxglc28" path="res://frames_vram_compressed/fire-loop/FireLoop0006.png" id="7_l6jsn"]
+[ext_resource type="Texture2D" uid="uid://duttdtgdw1tdg" path="res://frames_vram_compressed/fire-loop/FireLoop0007.png" id="8_0m5ei"]
+[ext_resource type="Texture2D" uid="uid://bcafbaip0h0q2" path="res://frames_vram_compressed/fire-loop/FireLoop0008.png" id="9_mdd53"]
+[ext_resource type="Texture2D" uid="uid://bujrt534j2bav" path="res://frames_vram_compressed/fire-loop/FireLoop0009.png" id="10_ydcx6"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_q8c0l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_rakpg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_82kaf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_flgnr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_c1ylq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_k4w54")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_l6jsn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_0m5ei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_mdd53")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_ydcx6")
+}],
+"loop": true,
+"name": &"flame-loop",
+"speed": 12.0
+}]
